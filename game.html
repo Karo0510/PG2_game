@@ -35,35 +35,34 @@
                 ctx.stroke();
             }
 
-            drawRectangle();
+            function clear()
+            {
+                ctx.fillStyle = "white";
+                ctxfill();
+                ctx.fillRect(0, 0, w, h);
+            }
+
 
             function move()
             {
-                ctx.fillStyle = "white";
-                ctxfill()
-                ctx.fillRect(0, 0, w, h);
-                drawRectangle();
-
-                if(rightPressed) 
+                x += dx;
+                if ((x + 50  > w) || (x <= 0))
                 {
-                    x += dx;
-                    if (x + 50  > w)
-                    {
-                        x = w - 50;
-                    }
-                }
-                else if(leftPressed) 
-                {
-                    x -= dx;
-                    if (x <= 0)
-                    {
-                        x = 0;
-                    }
-
+                    dx = -dx;
                 }
             }
 
-            document.addEventListener("keydown", pressKey, false);
+            function animate()
+            {
+                clear();
+                drawRectangle();
+                move();
+                
+            }
+
+            setInterval(function() {animate()}, 10);
+
+            /*document.addEventListener("keydown", pressKey, false);
             document.addEventListener("keyup", releaseKey, false);
 
             function pressKey()
@@ -88,9 +87,8 @@
                 {
                     leftPressed = false;
                 }
-            }
-
-            setInterval(draw, 10);
+            }*/
+       
         </script> 
     
 </body>
