@@ -15,12 +15,13 @@
             var c = document.getElementById("myCanvas");
             var ctx = c.getContext("2d");
 
-            var x1 = 0;
-            var x2 = 50;
+            var x = 0;
+            var size_x = 50;
             var y = 600;
+            var size_y = 50;
 
-            const w = 799;
-            const h = 599;
+            const w = 800;
+            const h = 600;
 
             var dx = 10;
 
@@ -30,7 +31,7 @@
             function drawRectangle()
             {
                 ctx.beginPath();    
-                ctx.rect(x1, y-50, x2, y);
+                ctx.rect(x, y-size_y, size_x, size_y);
                 ctx.fillStyle = "black";
                 ctx.fill();
                 ctx.stroke();
@@ -38,20 +39,17 @@
 
             function clear()
             {
-                // ;
                 ctx.fillStyle = "white";
                 ctx.fillRect(0, 0, w, h);
-                //ctx.fill();
-                
+                ctx.fill();   
             }
 
 
             function move()
             {
-                x1 += dx;
-                x2 += dx;
+                x += dx;
 
-                if ((x2  > w) || (x1 <= 0))
+                if ((x + size_x  > w) || (x <= 0))
                 {
                     dx = -dx;
                 }
@@ -63,13 +61,13 @@
                 clear();
                 
                   
-                console.log("x1 = "+x1+", x2 = "+x2);
+                //console.log("x1 = "+x1+", x2 = "+x2);
                 drawRectangle(); 
             }
 
          
 
-            setInterval(function() {animate()}, 1000);
+            setInterval(function() {animate()}, 10);
 
             /*document.addEventListener("keydown", pressKey, false);
             document.addEventListener("keyup", releaseKey, false);
