@@ -7,6 +7,15 @@
     <title>Document</title>
 </head>
 <body>
+    <canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML5 canvas tag.</canvas>
+        <script>
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            ctx.beginPath();    
+            ctx.rect(0, 550, 50, 600);
+            ctx.stroke();
+        </script> 
     
 </body>
 </html>
