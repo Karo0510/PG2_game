@@ -47,43 +47,41 @@
 
             function move()
             {
-                if (rightPressed)
-                {
-                    x += dx;
+                x += dx;
 
-                    if ((x + size_x  > w))
-                    {
-                        x = w-size_x;
-                    }
-                }else if (leftPressed)
+                if ((x + size_x  > w) || (x <= 0))
                 {
-                    x -= dx;
-
-                    if (x <= 0)
-                    {
-                        x = 0;
-                    }
+                    dx = -dx;
                 }
-                
             }
 
-            function pressKey(e)
+            function animate()
             {
-                if (e.key == "ArrowRight")
+                move();
+                clear();
+                drawRectangle(); 
+            }
+
+         
+
+            setInterval(function() {animate()}, 10);
+
+            document.addEventListener("keydown", pressKey, false);
+            document.addEventListener("keyup", releaseKey, false);
+
+            function pressKey()
+            {
+                if(e.key == "ArrowRight") 
                 {
                     rightPressed = true;
-                    //leftPressed = false;
                 }
-                
-                if (e.key == "ArrowLeft")
+                else if(e.key == "ArrowLeft") 
                 {
                     leftPressed = true;
-                    //rightPressed = false;
                 }
-                console.log(rightPressed);
             }
 
-            function releaseKey(e)
+            function releaseKey()
             {
                 if(e.key == "ArrowRight") 
                 {
@@ -94,19 +92,6 @@
                     leftPressed = false;
                 }
             }
-
-            document.addEventListener("keydown", pressKey, false);
-            document.addEventListener("keyup", releaseKey, false);
-
-            function animate()
-            {
-                move();
-                clear();
-                drawRectangle(); 
-            }
-
-
-            setInterval(function() {animate()}, 10);
        
         </script> 
     
