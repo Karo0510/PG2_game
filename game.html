@@ -11,25 +11,30 @@
         Your browser does not support the HTML5 canvas tag.</canvas>
         <script>
             
-         
-            background = document.getElementById("myCanvas");
-            bg = document.getContext('2d');
+            
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
 
-            w = 800;
-            h = 600;
 
             function drawRectangle()
             {
-                bg.beginPath();    
-                bg.rect(0, 550, 50, 600);
-                bg.fillStyle = "black"
-                bg.fill();
-                bg.stroke();
-                bg.closePath();
+                ctx.beginPath();    
+                ctx.rect(0, 550, 50, 600);
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            drawRectangle();
+
+            function move()
+            {
+                ctx.fillRect(0, 0, w, h);
+
+                
             }
 
 
-            drawRectangle();
 
         </script> 
     
