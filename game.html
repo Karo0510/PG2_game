@@ -16,6 +16,9 @@
             var ctx = c.getContext("2d");
 
 
+            dx = 10;
+            dy = 10;
+
             function drawRectangle()
             {
                 ctx.beginPath();    
@@ -30,9 +33,30 @@
             function move()
             {
                 ctx.fillRect(0, 0, w, h);
+                drawRectangle();
 
-                
+                if(rightPressed) 
+                {
+                    paletkaX += 5;
+                    if (paletkaX + paletkaW > canvas.width)
+                    {
+                        paletkaX = canvas.width - paletkaW-2;
+                    }
+                }
+                else if(leftPressed) 
+                {
+                    paletkaX -= 5;
+                        if (paletkaX < 2)
+                        {
+                            paletkaX = 2;
+                    }
+ }    
+
+
             }
+
+            document.addEventListener("keydown", wcisnietoKlawisz, false);
+            document.addEventListener("keyup", puszczonoKlawisz, false);
 
 
 
