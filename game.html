@@ -15,14 +15,16 @@
             var c = document.getElementById("myCanvas");
             var ctx = c.getContext("2d");
 
+            var x = 0;
+            var y = 600;
 
-            dx = 10;
-            dy = 10;
+            var dx = 10;
+            var dy = 10;
 
             function drawRectangle()
             {
                 ctx.beginPath();    
-                ctx.rect(0, 550, 50, 600);
+                ctx.rect(w, h-50, w+50, h);
                 ctx.fillStyle = "black";
                 ctx.fill();
                 ctx.stroke();
@@ -46,18 +48,16 @@
                 else if(leftPressed) 
                 {
                     paletkaX -= 5;
-                        if (paletkaX < 2)
-                        {
-                            paletkaX = 2;
+                    if (paletkaX < 2)
+                    {
+                        paletkaX = 2;
                     }
- }    
 
+                }
 
-            }
+            
 
-            document.addEventListener("keydown", wcisnietoKlawisz, false);
-            document.addEventListener("keyup", puszczonoKlawisz, false);
-
+           
 
 
         </script> 
