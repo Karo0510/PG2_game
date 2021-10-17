@@ -18,13 +18,16 @@
             var x = 0;
             var y = 600;
 
+            var w = 800;
+            var h = 600;
+
             var dx = 10;
             var dy = 10;
 
             function drawRectangle()
             {
                 ctx.beginPath();    
-                ctx.rect(w, h-50, w+50, h);
+                ctx.rect(x, y-50, x+50, y);
                 ctx.fillStyle = "black";
                 ctx.fill();
                 ctx.stroke();
@@ -39,21 +42,24 @@
 
                 if(rightPressed) 
                 {
-                    paletkaX += 5;
-                    if (paletkaX + paletkaW > canvas.width)
+                    x += dx;
+                    if (x + 50  > w)
                     {
-                        paletkaX = canvas.width - paletkaW-2;
+                        x = w - 50;
                     }
                 }
                 else if(leftPressed) 
                 {
-                    paletkaX -= 5;
-                    if (paletkaX < 2)
+                    x -= dx;
+                    if (x <= 0)
                     {
-                        paletkaX = 2;
+                        x = 0;
                     }
 
                 }
+            }
+
+            drawRectangle();
 
             
 
