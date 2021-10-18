@@ -14,6 +14,8 @@
             var c = document.getElementById("myCanvas");
             var ctx = c.getContext("2d");
 
+            CirclesArray = [];
+
             class Rectangle
             {
                 constructor(x, y, dx, x_size, y_size)
@@ -57,6 +59,7 @@
 
                 moveCircle()
                 {
+                    this.drawCircle();
                     if (this.y + this.r < 0.75*h)
                     {
                         this.y += this.dy;
@@ -66,6 +69,9 @@
                         this.dy = 0;
                     }
                 }
+
+
+               
             }
             const w = 800;
             const h = 600;
@@ -74,7 +80,33 @@
             leftPressed = false;
 
             var r = new Rectangle(0, 600, 10, 50, 50);
-            var c = new Circles(20, 20, 20, 5)
+
+            function addCircle()
+            {
+                x = Math.floor(Math.random()*(w-20));
+                var c = new Circles(x, 20, 20, 5);
+                CirclesArray.push(c);
+                console.log(CirclesArray);
+
+            }
+
+            setInterval(addCircle, 1000);
+
+            function updateCircles()
+            {
+                for (var i = 0; i<CirclesArray.length; i++)
+                {
+                    CirclesArray[i].moveCircle();
+                }
+            }
+
+
+            /*function animate()
+            {
+                clear();
+                updateCircles();
+            }
+            setInterval(animate, 100);*/
 
             function clear()
             {
@@ -82,17 +114,7 @@
                 ctx.fillRect(0, 0, w, h);
                 ctx.fill();   
             }
-
-            dx = 5;
-
-            /*function moveCircle()
-            {
-                c.x += dx;
-                console.log("c.x = "+c.x);
-            }*/
-
-
-            console.log(r.x+" "+r.y+" "+r.x_size+" "+r.y_size);     
+   
 
             function move()
             {
@@ -150,10 +172,9 @@
             function animate()
             {
                 move();
-                c.moveCircle();
                 clear();
                 r.drawRectangle();  
-                c.drawCircle();
+                updateCircles()
 
             }
 
