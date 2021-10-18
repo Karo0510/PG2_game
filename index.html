@@ -10,32 +10,71 @@
     <canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;">
         Your browser does not support the HTML5 canvas tag.</canvas>
         <script>
-            
-            
+
             var c = document.getElementById("myCanvas");
             var ctx = c.getContext("2d");
 
-            var x = 0;
-            var size_x = 50;
-            var y = 600;
-            var size_y = 50;
+            class Rectangle
+            {
+                constructor(x, y, dx, x_size, y_size)
+                {
+                    this.x = x;
+                    this.y = y;
+                    this.dx = dx;
+                    this.x_size = x_size;
+                    this.y_size = y_size;
+                }
 
+                drawRectangle()
+                { 
+                    console.log(this.x+" "+this.y);
+                    ctx.beginPath();
+                    ctx.rect(this.x, this.y-this.y_size, this.x_size, this.y_size);
+                    ctx.fillStyle = "black";
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
+
+            class Circles
+            {
+                constructor(x, y, r, dy)
+                {
+                    this.x = x;
+                    this.y = y;
+                    this.r = r;
+                    this.dy = dy;
+                }
+
+                drawCircle()
+                {
+                    ctx.beginPath();
+                    ctx.arc(this.x,this.y, this.r, 0, 2*Math.PI);
+                    ctx.fillStyle = "black";
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                moveCircle()
+                {
+                    if (this.y + this.r < 0.75*h)
+                    {
+                        this.y += this.dy;
+                    }
+                    else
+                    {
+                        this.dy = 0;
+                    }
+                }
+            }
             const w = 800;
             const h = 600;
-
-            var dx = 10;
 
             rightPressed = false;
             leftPressed = false;
 
-            function drawRectangle()
-            {
-                ctx.beginPath();    
-                ctx.rect(x, y-size_y, size_x, size_y);
-                ctx.fillStyle = "black";
-                ctx.fill();
-                ctx.stroke();
-            }
+            var r = new Rectangle(0, 600, 10, 50, 50);
+            var c = new Circles(20, 20, 20, 5)
 
             function clear()
             {
@@ -44,24 +83,34 @@
                 ctx.fill();   
             }
 
+            dx = 5;
+
+            /*function moveCircle()
+            {
+                c.x += dx;
+                console.log("c.x = "+c.x);
+            }*/
+
+
+            console.log(r.x+" "+r.y+" "+r.x_size+" "+r.y_size);     
 
             function move()
             {
                 if (rightPressed)
                 {
-                    x += dx;
+                    r.x += r.dx;
 
-                    if ((x + size_x  > w))
+                    if ((r.x + r.x_size  > w))
                     {
-                        x = w-size_x;
+                        r.x = w-r.x_size;
                     }
                 }else if (leftPressed)
                 {
-                    x -= dx;
+                    r.x -= r.dx;
 
-                    if (x <= 0)
+                    if (r.x <= 0)
                     {
-                        x = 0;
+                        r.x = 0;
                     }
                 }
                 
@@ -101,10 +150,12 @@
             function animate()
             {
                 move();
+                c.moveCircle();
                 clear();
-                drawRectangle(); 
-            }
+                r.drawRectangle();  
+                c.drawCircle();
 
+            }
 
             setInterval(function() {animate()}, 10);
        
