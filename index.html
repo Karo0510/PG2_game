@@ -15,6 +15,7 @@
             var ctx = c.getContext("2d");
 
             CirclesArray = [];
+            CirclesBulletArray = [];
 
             class Rectangle
             {
@@ -69,15 +70,50 @@
                         this.dy = 0;
                     }
                 }
-
-
-               
+   
             }
+
+            class CirclesBullet
+            {
+                constructor(x, y, r, dy)
+                {
+                    this.x = x;
+                    this.y = y;
+                    this.r = r;
+                    this.dy = dy;
+                }
+
+                drawCircleBullet()
+                {
+                    ctx.beginPath();
+                    ctx.arc(this.x,this.y, this.r, 0, 2*Math.PI);
+                    ctx.fillStyle = "red";
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                moveCircleBullet()
+                {
+                    this.drawCircleBullet();
+                    if (this.y + this.r > 0)
+                    {
+                        this.y -= this.dy;
+                    }
+                    else
+                    {
+                        this.dy = 0;
+                    }
+                }
+
+            }
+
+
             const w = 800;
             const h = 600;
 
             rightPressed = false;
             leftPressed = false;
+            space = false;
 
             var r = new Rectangle(0, 600, 10, 50, 50);
 
@@ -92,6 +128,15 @@
 
             setInterval(addCircle, 1000);
 
+            function addBullet()
+            {
+                x = r.x + r.x_size/2;
+                y = h - r.y_size + 5;
+                var b = new CirclesBullet(x, y, 5, 5);
+                CirclesBulletArray.push(b)
+                //console.log(CirclesBulletArray);
+            }
+
             function updateCircles()
             {
                 for (var i = 0; i<CirclesArray.length; i++)
@@ -100,13 +145,20 @@
                 }
             }
 
-
-            /*function animate()
+            function updateBullet()
             {
-                clear();
-                updateCircles();
+                for (var i = 0; i<CirclesBulletArray.length; i++)
+                {
+                    CirclesBulletArray[i].moveCircleBullet();
+
+                    if (CirclesBulletArray[i].y <= 0)
+                    {
+                        console.log("Usuniete")
+                        CirclesBulletArray.splice(i, 1);
+                    }
+                    Collision();
+                }
             }
-            setInterval(animate, 100);*/
 
             function clear()
             {
@@ -134,8 +186,50 @@
                     {
                         r.x = 0;
                     }
+                }else if (space)
+                {
+                    addBullet();
                 }
                 
+            }
+
+            function getDistance(x1, x2, y1, y2)
+            {
+                var dist_x = x1 - x2;
+                var dist_y = y1 - y2;
+
+                return Math.sqrt(Math.pow(dist_x, 2) + Math.pow(dist_y, 2));
+            }
+
+            function Collision()
+            {
+                console.log("length = "+CirclesBulletArray.length);
+
+                for (var i = 0; i < CirclesArray.length; i++)
+                {
+                    console.log("CircleBulletArray = "+CirclesBulletArray.length);
+                    for (var j = 0; j<CirclesBulletArray.length; j++)
+                    {
+                        console.log("Jestem w 2 petli");
+                        x1 = CirclesArray[i].x;
+                        y1 = CirclesArray[i].y;
+                        x2 = CirclesBulletArray[j].x;
+                        y2 = CirclesBulletArray[j].y;
+
+                        r1 = CirclesArray[i].r;
+                        r2 = CirclesBulletArray[j].r
+
+                        var wynik = getDistance(x1, x2, y1, y2);
+                        console.log("wynik = "+wynik);
+
+                        if (wynik <= r1+r2)
+                        {
+                            CirclesArray.splice(i, 1)
+                            CirclesBulletArray.splice(j, 1);
+                            console.log("BUM!");
+                        }
+                    }
+                }
             }
 
             function pressKey(e)
@@ -151,6 +245,10 @@
                     leftPressed = true;
                     //rightPressed = false;
                 }
+                if (e.key == " ")
+                {
+                    space = true;
+                }
                 console.log(rightPressed);
             }
 
@@ -164,6 +262,10 @@
                 {
                     leftPressed = false;
                 }
+                else if (e.key == " ")
+                {
+                    space = false;
+                }
             }
 
             document.addEventListener("keydown", pressKey, false);
@@ -174,7 +276,8 @@
                 move();
                 clear();
                 r.drawRectangle();  
-                updateCircles()
+                updateCircles();
+                updateBullet();
 
             }
 
