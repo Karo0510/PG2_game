@@ -18,6 +18,7 @@
             CirclesBulletArray = [];
 
             isGameOver = false;
+            var score = 0;
 
             class Rectangle
             {
@@ -124,7 +125,7 @@
             function addCircle()
             {
                 x = Math.floor(Math.random()*(w-25));
-                var c = new Circles(x, 20, 20, 5);
+                var c = new Circles(x, 20, 20, 3);
                 CirclesArray.push(c);
             }
 
@@ -221,9 +222,17 @@
                         {
                             CirclesArray.splice(i, 1)
                             CirclesBulletArray.splice(j, 1);
+                            score++;
                         }
                     }
                 }
+            }
+
+            function drawScore() 
+            {
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "black";
+                ctx.fillText("Score: "+score, 8, 20);
             }
 
             function pressKey(e)
@@ -272,10 +281,20 @@
                     r.drawRectangle();  
                     updateCircles();
                     updateBullet();
+                    drawScore();
                 }
                 else
                 {
-                    alert('Game Over');
+                    var text = ""
+                    if (score == 1)
+                    {
+                        text = "circle"
+                    }
+                    else
+                    {
+                        text = "circles"
+                    }   
+                    alert('Game Over. You shooted '+score+" "+text);
                 }
                 
 
