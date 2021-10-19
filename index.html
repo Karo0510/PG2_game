@@ -56,7 +56,7 @@
                 {
                     ctx.beginPath();
                     ctx.arc(this.x,this.y, this.r, 0, 2*Math.PI);
-                    ctx.fillStyle = "black";
+                    ctx.fillStyle = "blue";
                     ctx.fill();
                     ctx.stroke();
                 }
@@ -124,7 +124,7 @@
 
             function addCircle()
             {
-                x = Math.floor(Math.random()*(w-25));
+                x = Math.floor((Math.random() * (600 - 20)) + 20);
                 var c = new Circles(x, 20, 20, 3);
                 CirclesArray.push(c);
             }
