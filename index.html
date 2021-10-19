@@ -17,6 +17,8 @@
             CirclesArray = [];
             CirclesBulletArray = [];
 
+            isGameOver = false;
+
             class Rectangle
             {
                 constructor(x, y, dx, x_size, y_size)
@@ -61,13 +63,15 @@
                 moveCircle()
                 {
                     this.drawCircle();
-                    if (this.y + this.r < 0.75*h)
+                    if (this.y + this.r < h - 50)
                     {
                         this.y += this.dy;
                     }
                     else
                     {
-                        this.dy = 0;
+                        //this.dy = 0;
+                        isGameOver = true;
+                        location.reload();
                     }
                 }
    
@@ -119,11 +123,9 @@
 
             function addCircle()
             {
-                x = Math.floor(Math.random()*(w-20));
+                x = Math.floor(Math.random()*(w-25));
                 var c = new Circles(x, 20, 20, 5);
                 CirclesArray.push(c);
-                console.log(CirclesArray);
-
             }
 
             setInterval(addCircle, 1000);
@@ -134,7 +136,6 @@
                 y = h - r.y_size + 5;
                 var b = new CirclesBullet(x, y, 5, 5);
                 CirclesBulletArray.push(b)
-                //console.log(CirclesBulletArray);
             }
 
             function updateCircles()
@@ -153,7 +154,6 @@
 
                     if (CirclesBulletArray[i].y <= 0)
                     {
-                        console.log("Usuniete")
                         CirclesBulletArray.splice(i, 1);
                     }
                     Collision();
@@ -203,14 +203,10 @@
 
             function Collision()
             {
-                console.log("length = "+CirclesBulletArray.length);
-
                 for (var i = 0; i < CirclesArray.length; i++)
                 {
-                    console.log("CircleBulletArray = "+CirclesBulletArray.length);
                     for (var j = 0; j<CirclesBulletArray.length; j++)
                     {
-                        console.log("Jestem w 2 petli");
                         x1 = CirclesArray[i].x;
                         y1 = CirclesArray[i].y;
                         x2 = CirclesBulletArray[j].x;
@@ -220,13 +216,11 @@
                         r2 = CirclesBulletArray[j].r
 
                         var wynik = getDistance(x1, x2, y1, y2);
-                        console.log("wynik = "+wynik);
 
                         if (wynik <= r1+r2)
                         {
                             CirclesArray.splice(i, 1)
                             CirclesBulletArray.splice(j, 1);
-                            console.log("BUM!");
                         }
                     }
                 }
@@ -237,13 +231,11 @@
                 if (e.key == "ArrowRight")
                 {
                     rightPressed = true;
-                    //leftPressed = false;
                 }
                 
                 if (e.key == "ArrowLeft")
                 {
                     leftPressed = true;
-                    //rightPressed = false;
                 }
                 if (e.key == " ")
                 {
@@ -273,11 +265,19 @@
 
             function animate()
             {
-                move();
-                clear();
-                r.drawRectangle();  
-                updateCircles();
-                updateBullet();
+                if (!isGameOver)
+                {
+                    move();
+                    clear();
+                    r.drawRectangle();  
+                    updateCircles();
+                    updateBullet();
+                }
+                else
+                {
+                    alert('Game Over');
+                }
+                
 
             }
 
