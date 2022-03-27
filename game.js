@@ -3,7 +3,7 @@ var ctx = c.getContext("2d");
 
 height = c.clientHeight;
 width = c.clientWidth;
-endGame = false;
+isGameOver = false;
 
 ball_x = 400;
 ball_y = 300;
@@ -96,10 +96,16 @@ class Ball
             this.dx = -this.dx;
         }
         
-        if(this.y + this.dy + this.ballRadius > height || this.y + this.dy - this.ballRadius < 0) 
+        if(this.y + this.dy - this.ballRadius < 0) 
         {
             this.dy = -this.dy;
         }
+        else if (this.y + this.dy + this.ballRadius > height )
+        {
+            isGameOver = true;
+            //location.reload();
+        }
+        collision(ball, platform);
     }
 
 }
@@ -108,7 +114,13 @@ class Ball
 ball = new Ball(ball_x, ball_y, ball_dx,ball_dy, ball_ballRadius);
 platform = new Platform(platform_x, platform_y, platform_dx, platform_x_size, platform_y_size);
 
-
+function collision(ball, platform)
+{
+    if ((ball.y + ball.ballRadius >= platform.y - platform.y_size) && (ball.x > platform.x) && (ball.x < platform.x + platform.x_size))
+    {
+        ball.dy = -ball.dy;
+    }
+}
 
 function clear()
 {
@@ -147,19 +159,23 @@ document.addEventListener("keyup", releaseKey, false);
 
 function animate()
 {
-    ball.moveBall();
-    platform.movePlatform();
-    clear();
-    ball.drawBall();
-    platform.drawPlatform();
-
-    ctx.restore();
-    window.requestAnimationFrame(animate);
+    if (!isGameOver)
+    {
+        ball.moveBall();
+        platform.movePlatform();
+        clear();
+        ball.drawBall();
+        platform.drawPlatform();
+        ctx.restore();
+        window.requestAnimationFrame(animate);
+    }
+    else
+    {
+        alert('Game over');
+    }
+    
 }
 
-
-
-//setInterval(function() {animate()}, 1000);
 window.onload = (animate);
 
 
