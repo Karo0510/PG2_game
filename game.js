@@ -5,11 +5,13 @@ height = c.clientHeight;
 width = c.clientWidth;
 isGameOver = false;
 
-ball_x = 400;
-ball_y = 300;
+ball_x = 30;
+ball_y = 30;
 ball_dy = 3;
 ball_dx = 5;
 ball_ballRadius = 20;
+
+blocks = [];
 
 platform_x = 0;
 platform_y = 600;
@@ -105,22 +107,63 @@ class Ball
             isGameOver = true;
             //location.reload();
         }
-        collision(ball, platform);
+        collision(ball, platform, blocks);
+        //collisionBlock(ball, blocks);
     }
 
+}
+
+class Block
+{
+    constructor(x, y, x_size, y_size)
+    {
+        this.x = x;
+        this.y = y;
+        this.x_size = x_size;
+        this.y_size = y_size;
+        this.isVisible = true;
+    }
+
+    drawBlock()
+    {
+        ctx.beginPath();
+        ctx.rect(this.x, this.y-this.y_size, this.x_size, this.y_size);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.stroke();
+    }
 }
 
 
 ball = new Ball(ball_x, ball_y, ball_dx,ball_dy, ball_ballRadius);
 platform = new Platform(platform_x, platform_y, platform_dx, platform_x_size, platform_y_size);
 
-function collision(ball, platform)
+function collision(ball, platform, blocks)
 {
     if ((ball.y + ball.ballRadius >= platform.y - platform.y_size) && (ball.x > platform.x) && (ball.x < platform.x + platform.x_size))
     {
         ball.dy = -ball.dy;
     }
+
+    for (var i = 0; i<blocks.length; i++)
+    {
+        if (blocks[i].isVisible == true)
+        {
+            if (((ball.y + ball.ballRadius > blocks[i].y)) && ((ball.y - ball.ballRadius < blocks[i].y + blocks[i].y_size)))
+            {   
+                ball.dy = -ball.dy;
+                isVisible = false;
+            }
+
+            if (((ball.x + ball.ballRadius > blocks[i].x)) && ((ball.x - ball.ballRadius < blocks[i].x + blocks[i].x_size)))
+            {   
+                ball.dy = -ball.dy;
+                isVisible = false;
+            }
+        }
+    }
 }
+
 
 function clear()
 {
@@ -128,6 +171,30 @@ function clear()
     ctx.fillRect(0, 0, width, height);
     ctx.fill();   
 }
+
+function initializeBlocks()
+{
+    var j = 100;
+    while (j <=300)
+    {
+        for (var i = 1; i<=10; i++)
+        {
+            block = new Block(i*70, j, 50, 20, true);
+            blocks.push(block);
+        }
+
+        j = j+100;
+    }
+}
+
+function drawBlocks()
+{
+    for (var i = 0; blocks.length; i++)
+    {
+        blocks[i].drawBlock();
+    }
+}
+
 
 function pressKey(e)
 {
@@ -157,6 +224,10 @@ function releaseKey(e)
 document.addEventListener("keydown", pressKey, false);
 document.addEventListener("keyup", releaseKey, false);
 
+//drawBlocks();
+
+initializeBlocks();
+
 function animate()
 {
     if (!isGameOver)
@@ -173,8 +244,12 @@ function animate()
     {
         alert('Game over');
     }
+
+    drawBlocks();
     
 }
+
+
 
 window.onload = (animate);
 
