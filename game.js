@@ -126,6 +126,11 @@ class Block
 
     drawBlock()
     {
+
+        if (!this.isVisible)
+        {
+            return;
+        }
         ctx.beginPath();
         ctx.rect(this.x, this.y-this.y_size, this.x_size, this.y_size);
         ctx.fillStyle = "red";
@@ -149,17 +154,20 @@ function collision(ball, platform, blocks)
     {
         if (blocks[i].isVisible == true)
         {
-            if (((ball.y + ball.ballRadius > blocks[i].y)) && ((ball.y - ball.ballRadius < blocks[i].y + blocks[i].y_size)))
+            if (
+                ball.x - ball.ballRadius <= blocks[i].x + blocks[i].x_size &&
+                ball.x + ball.ballRadius >= blocks[i].x &&
+                ball.y - ball.ballRadius <= blocks[i].y + blocks[i].y_size &&
+                ball.y + ball.ballRadius >= blocks[i].y
+            )
             {   
-                ball.dy = -ball.dy;
-                isVisible = false;
+                blocks[i].isVisible = false;
+                ball.dy = -ball.dy; 
             }
-
-            if (((ball.x + ball.ballRadius > blocks[i].x)) && ((ball.x - ball.ballRadius < blocks[i].x + blocks[i].x_size)))
-            {   
-                ball.dy = -ball.dy;
-                isVisible = false;
-            }
+        }
+        else
+        {
+            continue;
         }
     }
 }
@@ -191,7 +199,11 @@ function drawBlocks()
 {
     for (var i = 0; blocks.length; i++)
     {
-        blocks[i].drawBlock();
+        if (blocks[i].isVisible)
+        {
+            blocks[i].drawBlock();
+        }
+        
     }
 }
 
@@ -226,12 +238,13 @@ document.addEventListener("keyup", releaseKey, false);
 
 //drawBlocks();
 
-initializeBlocks();
 
+initializeBlocks();
 function animate()
 {
     if (!isGameOver)
     {
+
         ball.moveBall();
         platform.movePlatform();
         clear();
@@ -239,20 +252,19 @@ function animate()
         platform.drawPlatform();
         ctx.restore();
         window.requestAnimationFrame(animate);
+       
     }
     else
     {
         alert('Game over');
     }
-
     drawBlocks();
     
 }
 
 
 
-window.onload = (animate);
-
+window.onload = (animate)
 
 
 
