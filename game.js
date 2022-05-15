@@ -5,9 +5,9 @@ height = c.clientHeight;
 width = c.clientWidth;
 isGameOver = false;
 
-ball_x = 30;
-ball_y = 30;
-ball_dy = 3;
+ball_x = 200;
+ball_y = 200;
+ball_dy = 2;
 ball_dx = 5;
 ball_ballRadius = 20;
 
@@ -145,9 +145,41 @@ platform = new Platform(platform_x, platform_y, platform_dx, platform_x_size, pl
 
 function collision(ball, platform, blocks)
 {
-    if ((ball.y + ball.ballRadius >= platform.y - platform.y_size) && (ball.x > platform.x) && (ball.x < platform.x + platform.x_size))
+    mod = 1;
+    y = ball_dy;
+
+    if ((ball.y + ball.ballRadius >= platform.y - platform.y_size) && (ball.x >= platform.x) && (ball.x <= platform.x + platform.x_size))
     {
-        ball.dy = -ball.dy;
+        if ( (ball.x >= 0,9*platform.x) )
+        {
+            mod = 3;
+        }
+        else if ((ball.x < 0,9*platform.x) && (ball.x >= 0,7*platform.x) )
+        {
+            mod = 2;
+        }
+        else if ((ball.x < 0,7*platform.x) && (ball.x >= 0,6*platform.x) )
+        {
+            mod = 1.5;
+        }
+        else if ((ball.x < 0,6*platform.x) && (ball.x >= 0,4*platform.x) )
+        {
+            mod = 1;
+        }
+        else if ((ball.x < 0,4*platform.x) && (ball.x >= 0,3*platform.x) )
+        {
+            mod = 1.5;
+        }
+        else if ((ball.x < 0,3*platform.x) && (ball.x >= 0,1*platform.x) )
+        {
+            mod = 2;
+        }
+        else if ((ball.x <= 0,1*platform.x))
+        {
+            mod = 3;
+        }
+        console.log("Y="+y);
+        ball.dy = -mod*y;
     }
 
     for (var i = 0; i<blocks.length; i++)
@@ -182,16 +214,16 @@ function clear()
 
 function initializeBlocks()
 {
-    var j = 100;
-    while (j <=300)
+    var j = 50;
+    while (j <=150)
     {
-        for (var i = 1; i<=10; i++)
+        for (var i = 0; i<10; i++)
         {
-            block = new Block(i*70, j, 50, 20, true);
+            block = new Block(i*80, j, 75, 45, true);
             blocks.push(block);
         }
 
-        j = j+100;
+        j = j+50;
     }
 }
 
@@ -235,8 +267,6 @@ function releaseKey(e)
 
 document.addEventListener("keydown", pressKey, false);
 document.addEventListener("keyup", releaseKey, false);
-
-//drawBlocks();
 
 
 initializeBlocks();
