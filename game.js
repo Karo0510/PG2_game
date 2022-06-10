@@ -12,6 +12,10 @@ ball_dx = 5;
 ball_ballRadius = 10;
 newBallcounter = 0;
 
+startTime  = new Date().getTime() / 1000;
+
+
+
 blocks = [];
 balls = [];
 scores = 0;
@@ -114,6 +118,17 @@ function newBall()
     }
 }
 
+function showTime() {
+    
+    var seconds = new Date().getTime() / 1000;
+    var wynik = seconds - startTime
+    ctx.fillStyle = "green";
+    ctx.font = "14px Arial";
+    ctx.fillText("Time: " + wynik, 550, 30);
+
+    return wynik;
+}
+
 
 function clear()
 {
@@ -156,6 +171,26 @@ function drawBlocks()
     }
 }
 
+function newRowTypeB()
+{
+    var seconds = new Date().getTime() / 1000;
+    var wynik = seconds - startTime
+
+    if (wynik % 10 == 0)
+    {
+        this.bricks.push(new Block(80, 50, 75, 45, true, 1));
+        this.bricks.push(new Block(160, 50, 75, 45, true, 2));
+        this.bricks.push(new Block(240, 50, 75, 45, true, 1));
+        this.bricks.push(new Block(320, 50, 75, 45, true, 2));
+        this.bricks.push(new Block(400, 50, 75, 45, true, 1));
+        this.bricks.push(new Block(480, 50, 75, 45, true, 2));
+        this.bricks.push(new Block(560, 50, 75, 45, true, 1));
+        this.bricks.push(new Block(640, 50, 75, 45, true, 2));
+        this.bricks.push(new Block(720, 50, 75, 45, true, 1));
+
+    }
+}
+
 
 function pressKey(e)
 {
@@ -189,6 +224,8 @@ document.addEventListener("keyup", releaseKey, false);
 initializeBlocks();
 function animate()
 {
+    showTime();
+    newRowTypeB();
     if (balls.length > 0)
     {
         newBall();
