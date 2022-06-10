@@ -10,8 +10,10 @@ ball_y = 200;
 ball_dy = 2;
 ball_dx = 5;
 ball_ballRadius = 10;
+newBallcounter = 0;
 
 blocks = [];
+balls = [];
 scores = 0;
 
 platform_x = 0;
@@ -28,7 +30,8 @@ image.src = 'background.bmp';
 ctx.drawImage(image, 0, 0);
 
 
-ball = new Ball(ball_x, ball_y, ball_dx,ball_dy, ball_ballRadius);
+ball = new Ball(ball_x, ball_y, ball_dx,ball_dy, ball_ballRadius, "blue");
+balls.push(ball);
 platform = new Platform(platform_x, platform_y, platform_dx, platform_x_size, platform_y_size);
 
 function collision(ball, platform, blocks)
@@ -82,6 +85,11 @@ function collision(ball, platform, blocks)
             )
             {   
                 blocks[i].isVisible = false;
+
+                if (blocks[i].type == 2)
+                {
+                    newBallcounter += 1;
+                }
                 ball.dy = -ball.dy; 
                 scores++;
             }
@@ -90,6 +98,19 @@ function collision(ball, platform, blocks)
         {
             continue;
         }
+    }
+}
+
+function newBall()
+{
+    console.log(newBallcounter);
+
+    if (newBallcounter >= 5)
+    {
+        console.log("AASAA");
+        var b = new Ball(ball_x, ball_y, ball_dx,ball_dy, ball_ballRadius, "black");
+        newBallcounter = 0;
+        balls.push(b)
     }
 }
 
@@ -103,12 +124,19 @@ function clear()
 
 function initializeBlocks()
 {
-    var j = 50;
-    while (j <=150)
+    var j = 100;
+    while (j <=200)
     {
         for (var i = 0; i<10; i++)
         {
-            block = new Block(i*80, j, 75, 45, true);
+            var type = 1;
+
+            if (i % 2 == 0)
+            {
+                type = 2;
+            }
+        
+            block = new Block(i*80, j, 75, 45, true, type);
             blocks.push(block);
         }
 
@@ -161,14 +189,29 @@ document.addEventListener("keyup", releaseKey, false);
 initializeBlocks();
 function animate()
 {
-    if (!isGameOver)
+    if (balls.length > 0)
     {
+        newBall();
 
-        ball.moveBall();
-        ball.update();
+        for (i = 0; i<balls.length; i++)
+        {
+            balls[i].moveBall();
+            balls[i].update();  
+
+            if (balls[i].lostBall)
+            {
+                balls.splice(i, 1); 
+            }
+            //balls[i].drawBall();
+        }
+        //ball.moveBall();
+        //ball.update();
         platform.movePlatform();
         clear();
-        ball.drawBall();
+        for (i = 0; i<balls.length; i++)
+        {
+            balls[i].drawBall();
+        }
         platform.drawPlatform();
         ctx.restore();
         window.requestAnimationFrame(animate);

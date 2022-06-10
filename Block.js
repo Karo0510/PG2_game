@@ -1,12 +1,13 @@
 class Block
 {
-    constructor(x, y, x_size, y_size)
+    constructor(x, y, x_size, y_size, isVisible, type)
     {
         this.x = x;
         this.y = y;
         this.x_size = x_size;
         this.y_size = y_size;
-        this.isVisible = true;
+        this.isVisible = isVisible;
+        this.type = type;
     }
 
     drawBlock()
@@ -17,7 +18,16 @@ class Block
         }
         ctx.beginPath();
         ctx.rect(this.x, this.y-this.y_size, this.x_size, this.y_size);
-        ctx.fillStyle = "red";
+
+        if (this.type == 1)
+        {
+            ctx.fillStyle = "green";
+        }
+        else
+        {
+            ctx.fillStyle = "red";
+        }
+    
         ctx.fill();
         ctx.stroke();
     }

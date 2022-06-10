@@ -1,22 +1,25 @@
 class Ball
 {
-    constructor(x, y, dx, dy, ballRadius)
+    constructor(x, y, dx, dy, ballRadius, color)
     {
         this.x = x;
         this.y = y;
         this.ballRadius = ballRadius;
         this.dx = dx;
         this.dy = dy;
+        this.color = color;
         this.previousPositions = [];
+        this.lostBall = false;
     }
 
     drawBall()
     {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();
+        ctx.globalAlpha=1;
     }
 
     newPosition() {
@@ -33,11 +36,11 @@ class Ball
             for (let i = 0; i < 5; i++) {
                 ctx.arc(this.x, this.y, this.ballRadius, 0, Math.PI*2);
                 ctx.globalAlpha=-0.05;
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
             }
-            ctx.fillStyle = "blue";
-            ctx.fill();
-            ctx.closePath();
-            //ctx.globalAlpha=1;
+            
         }
     }
 
@@ -60,10 +63,11 @@ class Ball
         }
         else if (this.y + this.dy + this.ballRadius > height )
         {
-            isGameOver = true;
+            this.lostBall = true;
+            //isGameOver = true;
             //location.reload();
         }
-        collision(ball, platform, blocks);
+        collision(this, platform, blocks);
         //collisionBlock(ball, blocks);
     }
 
